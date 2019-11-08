@@ -25,6 +25,12 @@ public class PessoaController{
 
     @Autowired
     private PessoaRepository repository;
+    
+    @RequestMapping(path = "/")
+    public String index(){
+        return "API DE TESTE";
+                
+    } 
 
     //LISTAR TODOS OS REGISTROS 
     @RequestMapping(path = "/pessoas")
