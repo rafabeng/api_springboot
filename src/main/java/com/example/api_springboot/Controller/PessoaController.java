@@ -8,10 +8,17 @@ package com.example.api_springboot.Controller;
 import com.example.api_springboot.Entity.Pessoa;
 import com.example.api_springboot.Repository.PessoaRepository;
 import java.util.Optional;
+import javax.validation.Valid;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -33,16 +40,43 @@ public class PessoaController{
     } 
 
     //LISTAR TODOS OS REGISTROS 
-    @RequestMapping(path = "/pessoas")
+    @RequestMapping(path = "/pessoas", method = RequestMethod.GET)
     public Iterable<Pessoa> listar() {
             return repository.findAll();
     }
-    //BUSCA POR ID
-    @RequestMapping(path = "/pessoas/{id}")
+    //BUSCAR REGISTRO POR ID
+    @RequestMapping(path = "/pessoas/{id}", method = RequestMethod.GET)
     public Iterable<Pessoa> getId(@PathVariable(value = "id") Long id) {
             return repository.findAllById(id);
     }
     
+    //DELETAR REGISTRO POR ID
+    @RequestMapping(path = "/pessoas/deletar/{id}", method = RequestMethod.DELETE)
+     public void DeleteId(@PathVariable(value = "id") Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        }
     
+    }
+     
+    //INSERIR REGISTRO POR ID
+    @RequestMapping(path = "/pessoas/inserir", method = RequestMethod.POST)
+     public void InserirId(@Valid Pessoa pessoa) {
+        if (!repository.existsById(pessoa.getId())) {
+            repository.save(pessoa);
+        }
+    
+    } 
+    
+    //ALTERAR REGISTRO POR ID
+    @RequestMapping(path = "/pessoas/alterar", method = RequestMethod.PUT)
+     public void AlterarId(@Valid Pessoa pessoa) {
+       if (repository.existsById(pessoa.getId())) {
+            repository.save(pessoa);
+       }  
+    
+    }
+
+     
 }
 
