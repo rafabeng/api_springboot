@@ -76,6 +76,12 @@ public class PessoaController{
        }  
     
     }
+     
+    //CONTAR REGISTROS 
+    @RequestMapping(path = "/pessoas/quantidade", method = RequestMethod.GET)
+    public long Quantidade() {
+            return repository.count();
+    }  
 
      
 }
